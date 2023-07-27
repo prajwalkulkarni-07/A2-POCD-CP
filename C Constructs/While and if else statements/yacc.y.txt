@@ -1,0 +1,45 @@
+%{
+#include <stdio.h>
+int yywrap()
+{
+  return 1;
+}
+%}
+
+%%
+"int"   { printf("Keyword: int\n"); }
+"float" { printf("Keyword: float\n"); }
+"while" { printf("Keyword: while\n"); }
+"if"    { printf("Keyword: if\n"); }
+"else"  { printf("Keyword: else\n"); }
+
+[0-9]+  { printf("Literal: %s\n", yytext); }
+
+"="     { printf("Operator: =\n"); }
+"<"     { printf("Operator: <\n"); }
+"<="    { printf("Operator: <=\n"); }
+"=="    { printf("Operator: ==\n"); }
+"++"    { printf("Operator: ++\n"); }
+"+"     { printf("Operator: +\n"); }
+
+";"     { printf("Delimiter: ;\n"); }
+"("     { printf("Delimiter: (\n"); }
+")"     { printf("Delimiter: )\n"); }
+"{"     { printf("Delimiter: {\n"); }
+"}"     { printf("Delimiter: }\n"); }
+","     { printf("Delimiter: ,\n"); }
+
+[a-zA-Z_][a-zA-Z0-9_]* { printf("Identifier: %s\n", yytext); }
+
+" "     ; /* Ignore whitespace */
+\n      ; /* Ignore newline */
+.       ; /* Ignore any other character */
+
+%%
+int main()
+{
+    yyin = fopen("input.c", "r");
+    yylex();
+    fclose(yyin);
+    return 0;
+}
